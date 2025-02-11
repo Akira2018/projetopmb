@@ -12,14 +12,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const video = document.getElementById("video");
     const canvas = document.getElementById("canvas");
     const tirarFoto = document.getElementById("tirarFoto");
-    const inputImagem = document.getElementById("id_imagem");
+    const inputImagem = document.getElementById("inputImagem");
 
     let stream = null;
 
     if (tirarFoto) {
         tirarFoto.addEventListener("click", function () {
             if (!stream) {
-                // Solicita acesso à câmera
+                // Solicita acesso à câmera traseira do celular
                 navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
                     .then(function (mediaStream) {
                         stream = mediaStream;
