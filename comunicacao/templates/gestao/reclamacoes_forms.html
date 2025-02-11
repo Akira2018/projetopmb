@@ -43,18 +43,19 @@
 
         <!-- Campo de imagem com opção de tirar foto -->
         <div class="mb-3">
-             <label for="id_imagem" class="form-label">Escolher Imagem ou Tirar Foto:</label>
+            <label for="id_imagem" class="form-label">Escolher Imagem ou Tirar Foto:</label>
 
-             <!-- Botão para escolher arquivo -->
-             <input type="file" id="inputImagem" name="imagem" accept="image/*" class="form-control">
+            <!-- Botão para escolher arquivo -->
+            <input type="file" id="inputImagem" name="imagem" accept="image/*" class="form-control">
 
-             <!-- Botão para tirar foto -->
-             <button type="button" class="btn btn-secondary mt-2" id="tirarFoto">Tirar Foto</button>
+            <!-- Botão para tirar foto -->
+            <button type="button" class="btn btn-secondary mt-2" id="tirarFoto">Tirar Foto</button>
 
-             <!-- Elementos para capturar imagem -->
-            <video id="video" width="320" height="240" autoplay style="display: none;"></video>
-            <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
-</div>
+            <!-- Elementos para capturar imagem -->
+           <video id="video" width="100%" height="240" autoplay style="display: none;"></video>
+           <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
+        </div>
+
         <button type="submit" class="btn btn-primary w-100">Salvar e Enviar Mensagem</button>
     </form>
 </div>

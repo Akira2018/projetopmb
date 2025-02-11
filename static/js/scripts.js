@@ -16,40 +16,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let stream = null;
 
-    if (tirarFoto) {
-        tirarFoto.addEventListener("click", function () {
-            if (!stream) {
-                // Solicita acesso à câmera traseira do celular
-                navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-                    .then(function (mediaStream) {
-                        stream = mediaStream;
-                        video.srcObject = mediaStream;
-                        video.style.display = "block";
-                        tirarFoto.textContent = "Capturar Foto";
-                    })
-                    .catch(function (err) {
-                        console.error("Erro ao acessar a câmera: ", err);
-                        alert("Erro ao acessar a câmera. Verifique as permissões do navegador.");
-                    });
-            } else {
-                // Captura a imagem do vídeo
-                canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
-                video.style.display = "none";
-
-                // Parar a câmera
-                stream.getTracks().forEach(track => track.stop());
-                stream = null;
-                tirarFoto.textContent = "Tirar Foto";
-
-                // Converte a imagem capturada para um arquivo e adiciona ao input de imagem
-                canvas.toBlob(function (blob) {
-                    const file = new File([blob], "captura.jpg", { type: "image/jpeg" });
-
-                    let dataTransfer = new DataTransfer();
-                    dataTransfer.items.add(file);
-                    inputImagem.files = dataTransfer.files;
-                }, "image/jpeg");
-            }
-        });
+    // Função para ativar a câmera
+    async function ativarCamera() {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({
+                video: { facingMode: { ideal: "environment" } } // Usa a câmera traseira se disponível
+            });
+            video.srcObject = stream;
+            video.style.display = "block";
+            tirarFoto.textContent = "Capturar Foto";
+        } catch (err) {
+            console.error("Erro ao acessar a câmera: ", err);
+            alert("Erro ao acessar a câmera. Verifique as permissões do navegador.");
+        }
     }
+
+    // Captura a foto e adiciona ao input de arquivo
+    function capturarFoto() {
+        if (stream) {
+            canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
+            video.style.display = "none";
+
+            // Parar a câmera
+            stream.getTracks().forEach(track => track.stop());
+            stream = null;
+            tirarFoto.textContent = "Tirar Foto";
+
+            // Converte a imagem para um arquivo e adiciona ao input de imagem
+            canvas.toBlob(function (blob) {
+                const file = new File([blob], "captura.jpg", { type: "image/jpeg" });
+
+                let dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                inputImagem.files = dataTransfer.files;
+            }, "image/jpeg");
+        }
+    }
+
+    // Adiciona evento ao botão "Tirar Foto"
+    tirarFoto.addEventListener("click", function () {
+        if (!stream) {
+            ativarCamera();
+        } else {
+            capturarFoto();
+        }
+    });
 });
