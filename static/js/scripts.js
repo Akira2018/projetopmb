@@ -19,8 +19,8 @@ document.addEventListener("DOMContentLoaded", function () {
     if (tirarFoto) {
         tirarFoto.addEventListener("click", function () {
             if (!stream) {
-                // Solicita permissão para acessar a câmera
-                navigator.mediaDevices.getUserMedia({ video: true })
+                // Solicita acesso à câmera
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
                     .then(function (mediaStream) {
                         stream = mediaStream;
                         video.srcObject = mediaStream;
@@ -32,9 +32,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         alert("Erro ao acessar a câmera. Verifique as permissões do navegador.");
                     });
             } else {
-                // Captura a foto
+                // Captura a imagem do vídeo
                 canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
-                canvas.style.display = "block";
                 video.style.display = "none";
 
                 // Parar a câmera
@@ -42,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 stream = null;
                 tirarFoto.textContent = "Tirar Foto";
 
-                // Converte a imagem em um arquivo e adiciona ao campo de upload
+                // Converte a imagem capturada para um arquivo e adiciona ao input de imagem
                 canvas.toBlob(function (blob) {
                     const file = new File([blob], "captura.jpg", { type: "image/jpeg" });
 

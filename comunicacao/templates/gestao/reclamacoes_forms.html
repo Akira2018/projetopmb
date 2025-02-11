@@ -44,7 +44,7 @@
         <!-- Campo de imagem com opção de tirar foto -->
         <div class="mb-3">
             <label for="id_imagem" class="form-label">Imagem:</label>
-            <input type="file" id="id_imagem" name="imagem" accept="image/*" class="form-control">
+            <input type="file" id="id_imagem" name="imagem" accept="image/*" capture="environment" class="form-control">
             <button type="button" class="btn btn-secondary mt-2" id="tirarFoto">Tirar Foto</button>
             <!-- Elementos para capturar a imagem -->
             <video id="video" width="320" height="240" autoplay style="display: none;"></video>
