@@ -1,7 +1,5 @@
 {% load static %}
 
-{% block title %}Canal de Comunicação com a Prefeitura Municipal de Bauru{% endblock %}
-
 {% block extrahead %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}?v={{ STATIC_VERSION }}">
@@ -41,19 +39,20 @@
             {{ form.status }}
         </div>
 
-        <!-- Campo de imagem com opção de tirar foto -->
         <div class="mb-3">
-            <label for="id_imagem" class="form-label">Escolher Imagem ou Tirar Foto:</label>
+             <label for="inputImagem" class="form-label">Escolher Imagem ou Tirar Foto:</label>
 
-            <!-- Botão para escolher arquivo -->
-            <input type="file" id="inputImagem" name="imagem" accept="image/*" class="form-control">
+             <!-- Botão para escolher arquivo (funciona como tirar foto no celular) -->
+             <input type="file" id="inputImagem" name="imagem" accept="image/*" capture="environment" class="form-control">
 
-            <!-- Botão para tirar foto -->
-            <button type="button" class="btn btn-secondary mt-2" id="tirarFoto">Tirar Foto</button>
+             <p class="text-center mt-2">Ou</p>
 
-            <!-- Elementos para capturar imagem -->
-           <video id="video" width="100%" height="240" autoplay style="display: none;"></video>
-           <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
+             <!-- Botão para ativar a câmera manualmente -->
+             <button type="button" class="btn btn-secondary w-100" id="tirarFoto">Tirar Foto</button>
+
+             <!-- Elementos para exibir a câmera -->
+             <video id="video" width="100%" height="240" autoplay style="display: none;"></video>
+             <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
         </div>
 
         <button type="submit" class="btn btn-primary w-100">Salvar e Enviar Mensagem</button>
@@ -68,3 +67,4 @@
     </div>
 </div>
 {% endblock %}
+

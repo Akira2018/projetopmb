@@ -16,11 +16,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let stream = null;
 
-    // Função para ativar a câmera
+    // Ativar a câmera manualmente
     async function ativarCamera() {
         try {
             stream = await navigator.mediaDevices.getUserMedia({
-                video: { facingMode: { ideal: "environment" } } // Usa a câmera traseira se disponível
+                video: { facingMode: { ideal: "environment" } } // Usa a câmera traseira no celular
             });
             video.srcObject = stream;
             video.style.display = "block";
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Captura a foto e adiciona ao input de arquivo
+    // Capturar foto e adicioná-la ao input file
     function capturarFoto() {
         if (stream) {
             canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
             stream = null;
             tirarFoto.textContent = "Tirar Foto";
 
-            // Converte a imagem para um arquivo e adiciona ao input de imagem
+            // Converter imagem para um arquivo e adicioná-la ao input
             canvas.toBlob(function (blob) {
                 const file = new File([blob], "captura.jpg", { type: "image/jpeg" });
 
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Adiciona evento ao botão "Tirar Foto"
+    // Evento no botão "Tirar Foto"
     tirarFoto.addEventListener("click", function () {
         if (!stream) {
             ativarCamera();
