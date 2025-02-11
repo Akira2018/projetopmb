@@ -1,0 +1,13 @@
+#success_page.html
+
+{% extends "admin/base_custom.html" %}
+
+{% block title %}Sucesso{% endblock %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <h2>Formulário Enviado com Sucesso!</h2>
+    <p>Sua reclamação foi registrada com sucesso. Obrigado!</p>
+    <a href="{% url 'reclamacoes_forms' %}" class="btn btn-primary mt-3">Voltar ao Formulário</a>
+</div>
+{% endblock %}

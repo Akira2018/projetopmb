@@ -1,0 +1,82 @@
+{% extends "admin/base_custom.html" %}
+{% load static %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Gestão de Reclamações</title>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/admin_custom.css' %}">
+{% endblock %}
+
+{% block branding %}
+    <h1 id="site-name" class="text-center my-4">
+        <a href="{% url 'admin:index' %}" class="text-decoration-none text-primary">
+            Gestão de Reclamações Públicas Municipais
+        </a>
+    </h1>
+{% endblock %}
+
+{% block nav-global %}
+<nav id="menu" class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'admin:index' %}">Início</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto custom-admin-menu">
+                {% if user.is_superuser %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="adminMenu" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">Gerenciamento de Notificações</a>
+                        <ul class="dropdown-menu" aria-labelledby="adminMenu">
+                            <li><a class="dropdown-item" href="{% url 'admin:usuarios_customuser_changelist' %}">Cadastro de Usuários</a></li>
+                            <li><a class="dropdown-item" href="{% url 'admin:auth_group_add' %}">Cadastro de Grupos</a></li>
+                            <li><a class="dropdown-item" href="{% url 'admin:auth_group_changelist' %}">Listagem de Grupos</a></li>
+                            <li><a class="dropdown-item" href="{% url 'admin:comunicacao_categoria_changelist' %}">Cadastro de Categorias</a></li>
+                            <li><a class="dropdown-item" href="{% url 'admin:comunicacao_reclamacao_changelist' %}">Cadastro de Reclamações</a></li>
+                            <li><a class="dropdown-item" href="{% url 'admin:comunicacao_historicostatus_changelist' %}">Histórico de Reclamações</a></li>
+                            <li><a class="dropdown-item" href="{% url 'reclamacoes_forms' %}">Formulário de Reclamações</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">Gestão de Notificações</a>
+                        <ul class="dropdown-menu" aria-labelledby="userMenu">
+                            <li><a class="dropdown-item" href="{% url 'reclamacoes_forms' %}">Formulário de Reclamações</a></li>
+                            <li><a class="dropdown-item" href="{% url 'admin:comunicacao_historicostatus_changelist' %}">Histórico de Reclamações</a></li>
+                            <li>
+                                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item">Sair do Aplicativo</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Bem-vindo ao Sistema de Gestão de Reclamações</h2>
+    <p class="text-center">Aqui você pode gerenciar as notificações, acompanhar o histórico de reclamações e muito mais.</p>
+</div>
+{% endblock %}
+
+{% block footer %}
+<footer class="bg-light text-center py-3">
+    <div class="text-muted">© {{ now|date:"Y" }} Reclamações Públicas | Desenvolvido com Django e Bootstrap</div>
+</footer>
+{% endblock %}
+
