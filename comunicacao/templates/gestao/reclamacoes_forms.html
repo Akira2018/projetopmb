@@ -1,4 +1,3 @@
-{% extends "admin/base_site.html" %}
 {% load static %}
 
 {% block extrahead %}
@@ -9,7 +8,9 @@
     <!-- Script do VLibras -->
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <script>
-        new window.VLibras.Widget('https://vlibras.gov.br/app');
+        document.addEventListener("DOMContentLoaded", function () {
+            new window.VLibras.Widget('https://vlibras.gov.br/app');
+        });
     </script>
 {% endblock %}
 
@@ -40,25 +41,25 @@
             {{ form.status }}
         </div>
 
-         <div class="mb-3">
-            <label for="inputImagem" class="form-label" id="labelImagem">
-                Escolher Arquivo:
-            </label>
+        <div class="mb-3">
+            <label for="inputImagem" class="form-label">Escolher Arquivo/Tirar foto:</label>
 
-            <!-- Botão para escolher arquivo ou tirar foto -->
+            <!-- Botão para escolher arquivo (funciona como tirar foto no celular) -->
             <input type="file" id="inputImagem" name="imagem" accept="image/*" capture="environment" class="form-control">
 
             <p class="text-center mt-2">Ou</p>
 
             <!-- Botão para ativar a câmera manualmente -->
-            <button type="button" class="btn btn-secondary w-100" id="tirarFoto">
-                Tirar Foto
-            </button>
+            <button type="button" class="btn btn-secondary w-100" id="tirarFoto">Tirar Foto</button>
 
             <!-- Elementos para exibir a câmera -->
             <video id="video" width="100%" height="240" autoplay style="display: none;"></video>
             <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
+
+            <!-- Campo oculto para armazenar a imagem capturada -->
+            <input type="hidden" id="imagemCapturada" name="imagemCapturada">
         </div>
+
         <button type="submit" class="btn btn-primary w-100">Salvar e Enviar Mensagem</button>
     </form>
 </div>
@@ -70,5 +71,46 @@
         <div class="vw-plugin-top-wrapper"></div>
     </div>
 </div>
-{% endblock %}
 
+<!-- SCRIPT PARA ATIVAR A CÂMERA E TIRAR FOTO -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const video = document.getElementById("video");
+        const canvas = document.getElementById("canvas");
+        const tirarFotoBtn = document.getElementById("tirarFoto");
+        const inputImagem = document.getElementById("inputImagem");
+        const imagemCapturada = document.getElementById("imagemCapturada");
+
+        let streaming = false;
+
+        // Ativar câmera ao clicar no botão
+        tirarFotoBtn.addEventListener("click", function () {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function (stream) {
+                    video.style.display = "block";
+                    video.srcObject = stream;
+                    streaming = true;
+                })
+                .catch(function (err) {
+                    alert("Erro ao acessar a câmera: " + err);
+                });
+        });
+
+        // Capturar a foto ao clicar no vídeo
+        video.addEventListener("click", function () {
+            if (streaming) {
+                const context = canvas.getContext("2d");
+                context.drawImage(video, 0, 0, 320, 240);
+
+                // Converter imagem para base64
+                const imageData = canvas.toDataURL("image/png");
+                imagemCapturada.value = imageData; // Armazena a imagem no input oculto
+
+                // Desligar a câmera
+                video.srcObject.getTracks().forEach(track => track.stop());
+                video.style.display = "none";
+            }
+        });
+    });
+</script>
+{% endblock %}

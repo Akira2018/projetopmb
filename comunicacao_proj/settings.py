@@ -20,18 +20,19 @@ ALLOWED_HOSTS = ['192.168.0.203','127.0.0.1', 'localhost']
 ADMIN_URL = 'admin/'  # Defina o URL do painel de administração
 LOGIN_URL = '/accounts/login/'
 CSRF_COOKIE_SECURE = False  # Defina como True se estiver usando HTTPS
+CSRF_USE_SESSIONS = False
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://192.168.0.203",
+    "http://127.0.0.1",
+    "http://localhost",
+    "https://projetopmb-1828de3d0b28.herokuapp.com"
+]
 
 #CSRF_TRUSTED_ORIGINS = ['https://escolae-255a9c5574fe.herokuapp.com/']
 
 # Define o tempo de expiração da sessão em segundos (por exemplo, 1 hora)
 SESSION_COOKIE_AGE = 3600
-
-#APP_NAME = os.environ.get("FLY_APP_NAME")  # Application definition
-
-# settings.py
-
-
-#LOGIN_REDIRECT_URL = '/accounts/profile/'
 
 # Redirecionar após login
 # Redirecionamentos após login e logout
