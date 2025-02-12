@@ -52,8 +52,8 @@ urlpatterns = [
     path('reclamacao/nova/', criar_reclamacao, name='nova_reclamacao'),
     path('minhas-reclamacoes/', minhas_reclamacoes, name='minhas_reclamacoes'),
     path('formulario-reclamacao/', views.reclamacoes_forms, name='reclamacoes_forms'),
-    path('formulario-reclamacao//sucesso/', views.success_page, name='success_page'),
-            # Alternar contraste
+    path('formulario-reclamacao/sucesso/', views.success_page, name='success_page'),
+    # Alternar contraste
     path('toggle-contrast/', toggle_contrast, name='toggle_contrast'),
 ]
 

@@ -1,3 +1,4 @@
+{% extends "admin/base_site.html" %}
 {% load static %}
 
 {% block extrahead %}
@@ -39,22 +40,25 @@
             {{ form.status }}
         </div>
 
-        <div class="mb-3">
-             <label for="inputImagem" class="form-label">Escolher Imagem no desktop ou Tirar Foto no celular:</label>
+         <div class="mb-3">
+            <label for="inputImagem" class="form-label" id="labelImagem">
+                Escolher Arquivo:
+            </label>
 
-             <!-- Botão para escolher arquivo (funciona como tirar foto no celular) -->
-             <input type="file" id="inputImagem" name="imagem" accept="image/*" capture="environment" class="form-control">
+            <!-- Botão para escolher arquivo ou tirar foto -->
+            <input type="file" id="inputImagem" name="imagem" accept="image/*" capture="environment" class="form-control">
 
-             <p class="text-center mt-2"></p>
+            <p class="text-center mt-2">Ou</p>
 
-             <!-- Botão para ativar a câmera manualmente -->
-             <button type="button" class="btn btn-secondary w-100" id="tirarFoto"></button>
+            <!-- Botão para ativar a câmera manualmente -->
+            <button type="button" class="btn btn-secondary w-100" id="tirarFoto">
+                Tirar Foto
+            </button>
 
-             <!-- Elementos para exibir a câmera -->
-             <video id="video" width="100%" height="240" autoplay style="display: none;"></video>
-             <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
+            <!-- Elementos para exibir a câmera -->
+            <video id="video" width="100%" height="240" autoplay style="display: none;"></video>
+            <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
         </div>
-
         <button type="submit" class="btn btn-primary w-100">Salvar e Enviar Mensagem</button>
     </form>
 </div>

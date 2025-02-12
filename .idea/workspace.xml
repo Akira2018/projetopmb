@@ -7,11 +7,10 @@
     <list default="true" id="5fdfa572-1374-435d-91fd-ab8e981eca8e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Reclamacoes.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/Reclamacoes.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/comunicacao/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/comunicacao/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/comunicacao/templates/admin/base_site.html" beforeDir="false" afterPath="$PROJECT_DIR$/comunicacao/templates/admin/base_site.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/comunicacao/templates/gestao/reclamacoes_forms.html" beforeDir="false" afterPath="$PROJECT_DIR$/comunicacao/templates/gestao/reclamacoes_forms.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/comunicacao/templates/gestao/success_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/comunicacao/templates/gestao/success_page.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/comunicacao/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/comunicacao/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/comunicacao_proj/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/comunicacao_proj/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/comunicacao/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/comunicacao/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/js/scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/scripts.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

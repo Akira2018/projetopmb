@@ -9,14 +9,27 @@ function togglePopup() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    const video = document.getElementById("video");
-    const canvas = document.getElementById("canvas");
+    const labelImagem = document.getElementById("labelImagem");
     const tirarFoto = document.getElementById("tirarFoto");
     const inputImagem = document.getElementById("inputImagem");
+    const video = document.getElementById("video");
+    const canvas = document.getElementById("canvas");
 
     let stream = null;
 
-    // Ativar a câmera manualmente
+    // Detecta se é um dispositivo móvel
+    function isMobileDevice() {
+        return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    }
+
+    // Ajusta o texto do input e do botão conforme o dispositivo
+    if (isMobileDevice()) {
+        labelImagem.textContent = "Tirar Foto ou Escolher Arquivo:";
+    } else {
+        labelImagem.textContent = "Escolher Arquivo:";
+    }
+
+    // Função para ativar a câmera manualmente
     async function ativarCamera() {
         try {
             stream = await navigator.mediaDevices.getUserMedia({
@@ -31,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Capturar foto e adicioná-la ao input file
+    // Função para capturar a foto e adicioná-la ao input file
     function capturarFoto() {
         if (stream) {
             canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -53,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Evento no botão "Tirar Foto"
+    // Adiciona evento ao botão "Tirar Foto"
     tirarFoto.addEventListener("click", function () {
         if (!stream) {
             ativarCamera();
