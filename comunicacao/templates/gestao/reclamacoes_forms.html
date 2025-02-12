@@ -42,15 +42,29 @@
         </div>
 
         <div class="mb-3">
-            <label for="inputImagem" class="form-label">Escolher Arquivo/Tirar foto:</label>
+            <label class="form-label">Escolher Arquivo/Tirar Foto:</label>
 
             <!-- Botão para escolher arquivo (funciona como tirar foto no celular) -->
             <input type="file" id="inputImagem" name="imagem" accept="image/*" capture="environment" class="form-control">
 
             <p class="text-center mt-2">Ou</p>
 
+            <!-- Seletor de câmera -->
+            <label for="cameraSelect" class="form-label">Selecionar Câmera:</label>
+            <select id="cameraSelect" class="form-select">
+                <option value="user">Frontal</option>
+                <option value="environment">Traseira</option>
+            </select>
+
             <!-- Botão para ativar a câmera manualmente -->
-            <button type="button" class="btn btn-secondary w-100" id="tirarFoto">Tirar Foto</button>
+            <button type="button" class="btn btn-secondary w-100 mt-2" id="ativarCamera">
+                Ativar Câmera
+            </button>
+
+            <!-- Botão para capturar foto -->
+            <button type="button" class="btn btn-primary w-100 mt-2" id="capturarFoto" style="display: none;">
+                Capturar Foto
+            </button>
 
             <!-- Elementos para exibir a câmera -->
             <video id="video" width="100%" height="240" autoplay style="display: none;"></video>
@@ -77,39 +91,41 @@
     document.addEventListener("DOMContentLoaded", function () {
         const video = document.getElementById("video");
         const canvas = document.getElementById("canvas");
-        const tirarFotoBtn = document.getElementById("tirarFoto");
-        const inputImagem = document.getElementById("inputImagem");
+        const ativarCameraBtn = document.getElementById("ativarCamera");
+        const capturarFotoBtn = document.getElementById("capturarFoto");
+        const cameraSelect = document.getElementById("cameraSelect");
         const imagemCapturada = document.getElementById("imagemCapturada");
-
-        let streaming = false;
+        let stream = null;
 
         // Ativar câmera ao clicar no botão
-        tirarFotoBtn.addEventListener("click", function () {
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(function (stream) {
-                    video.style.display = "block";
+        ativarCameraBtn.addEventListener("click", function () {
+            const cameraMode = cameraSelect.value; // Seleciona frontal ou traseira
+
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: cameraMode } })
+                .then(function (mediaStream) {
+                    stream = mediaStream;
                     video.srcObject = stream;
-                    streaming = true;
+                    video.style.display = "block";
+                    capturarFotoBtn.style.display = "block";
                 })
                 .catch(function (err) {
                     alert("Erro ao acessar a câmera: " + err);
                 });
         });
 
-        // Capturar a foto ao clicar no vídeo
-        video.addEventListener("click", function () {
-            if (streaming) {
-                const context = canvas.getContext("2d");
-                context.drawImage(video, 0, 0, 320, 240);
+        // Capturar a foto ao clicar no botão
+        capturarFotoBtn.addEventListener("click", function () {
+            const context = canvas.getContext("2d");
+            context.drawImage(video, 0, 0, 320, 240);
 
-                // Converter imagem para base64
-                const imageData = canvas.toDataURL("image/png");
-                imagemCapturada.value = imageData; // Armazena a imagem no input oculto
+            // Converter imagem para base64
+            const imageData = canvas.toDataURL("image/png");
+            imagemCapturada.value = imageData; // Armazena a imagem no input oculto
 
-                // Desligar a câmera
-                video.srcObject.getTracks().forEach(track => track.stop());
-                video.style.display = "none";
-            }
+            // Parar a câmera após capturar a foto
+            stream.getTracks().forEach(track => track.stop());
+            video.style.display = "none";
+            capturarFotoBtn.style.display = "none";
         });
     });
 </script>
