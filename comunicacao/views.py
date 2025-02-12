@@ -19,6 +19,9 @@ from django.http import HttpResponseForbidden
 from django.contrib.auth.views import LoginView
 from django.template import RequestContext
 from .forms import ReclamacaoForm
+from django.core.files.base import ContentFile
+import base64
+
 
 from .forms import (
     ReclamacaoForm,
@@ -163,25 +166,40 @@ def registrar_reclamacao(request):
         form = ReclamacaoForm()
     return render(request, 'gestao/registrar_reclamacao.html', {'form': form})
 
-@login_required
+@login_required  # Garante que somente usuários autenticados possam acessar
 def reclamacoes_forms(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = ReclamacaoForm(request.POST, request.FILES)
+
+        # Obtém o usuário autenticado
+        if request.user.is_authenticated:
+            form.instance.usuario = request.user  # Define o usuário
+
+        # Verifica se há imagem em Base64 no formulário
+        imagem_base64 = request.POST.get("imagem_base64")
+        if imagem_base64:
+            format, imgstr = imagem_base64.split(';base64,')
+            ext = format.split('/')[-1]
+            imagem = ContentFile(base64.b64decode(imgstr), name=f"foto_capturada.{ext}")
+            form.instance.imagem = imagem  # Salva no campo de imagem do modelo
+
         if form.is_valid():
-            reclamacao = form.save(commit=False)  # Não salva no banco ainda
-            reclamacao.usuario = request.user  # Atribui o usuário autenticado
-            reclamacao.save()  # Agora salva no banco
-            return redirect('success_page')  # Substitua aqui
+            form.save()
+            return redirect("success_page")
+
     else:
         form = ReclamacaoForm()
 
-    return render(request, 'gestao/reclamacoes_forms.html', {'form': form})
+    return render(request, "gestao/reclamacoes_forms.html", {"form": form})
 
 # View para listar as reclamações do usuário logado
 @login_required
 def minhas_reclamacoes(request):
     reclamacoes = Reclamacao.objects.filter(usuario=request.user)
     return render(request, 'gestao/minhas_reclamacoes.html', {'reclamacoes': reclamacoes})
+
+def menu_principal(request):
+    return render(request, 'base_site.html')
 
 def success_page(request):
     return render(request, 'gestao/success_page.html')

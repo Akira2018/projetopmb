@@ -40,6 +40,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),  # Inclui URLs de autenticação padrão
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('', views.menu_principal, name='menu_principal'),
 
     path('encerramento/', TemplateView.as_view(template_name='encerramento.html'), name='encerramento'),
     # Gerenciamento de usuários

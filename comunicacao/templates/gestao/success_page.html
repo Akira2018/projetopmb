@@ -1,13 +1,18 @@
-{% extends "admin/base_custom.html" %}
+{% extends "base.html" %}
 
 {% block title %}Sucesso{% endblock %}
 
 {% block content %}
 <div class="container text-center mt-5">
-    <div class="alert alert-success" role="alert">
-        <h2>Formulário Enviado com Sucesso!</h2>
-        <p>Sua reclamação foi registrada com sucesso. Obrigado!</p>
-    </div>
-    <a href="{% url 'reclamacoes_forms' %}" class="btn btn-primary mt-3">Voltar ao Formulário</a>
+    <h2>Formulário Enviado com Sucesso!</h2>
+    <p>Sua Mensagem, foi Registrada. Obrigado!</p>
 </div>
+
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
 {% endblock %}
+
+
+

@@ -106,15 +106,8 @@ LOGGING = {
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'comunicacao/templates')
 
 # Configuração dos Templates
-import os
-from pathlib import Path  # Importe pathlib para lidar com caminhos
-
 # Diretório base do projeto
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Configure TEMPLATES
-# Caminhos dos templates
-import os
 
 TEMPLATES = [
     {
