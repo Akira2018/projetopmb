@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Nova Reclamação</title>
+</head>
+<body style="font-family: Arial, sans-serif; color: #333;">
+    <p style="font-size: 16px; font-weight: bold;">Nova Reclamação Registrada</p>
+    <hr style="border: 1px solid #D80032;">
+    <p><strong>Título:</strong> {{ reclamacao.titulo }}</p>
+    <p><strong>Descrição:</strong> {{ reclamacao.descricao }}</p>
+    <p><strong>Categoria:</strong> {{ categoria.descricao }}</p>
+    <hr style="border: 1px solid #D80032;">
+    <p><strong>Nome Completo:</strong> {{ reclamacao.usuario.get_full_name }}</p>
+    <p><strong>E-mail:</strong> {{ reclamacao.usuario.email }}</p>
+    <p><strong>Telefone:</strong> {{ reclamacao.usuario.telefone }}</p>
+    <hr style="border: 1px solid #D80032;">
+    <p>Enviado por Gestão de Relacionamentos.</p>
+</body>
+</html>
+

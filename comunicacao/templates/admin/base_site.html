@@ -1,0 +1,65 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Relacionamentos</title>
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/admin_custom.css' %}">
+    <script src="{% static 'js/menu.js' %}"></script>
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">Gestão de Relacionamentos</a></h1>
+{% endblock %}
+
+{% block nav-global %}
+<nav id="menu">
+    <ul class="custom-admin-menu">
+        {% if user.is_superuser %}
+            <li class="nav-item">
+                <a href="#">Gerenciamento de Notificações</a>
+                <ul class="nav-dropdown dropdown-menu">
+                    <li><a href="{% url 'admin:usuarios_customuser_changelist' %}">Cadastro de Usuários</a></li>
+                    <li><a href="{% url 'admin:auth_group_add' %}">Cadastro de Grupos</a></li>
+                    <li><a href="{% url 'admin:auth_group_changelist' %}">Listagem de Grupos</a></li>
+                    <li><a href="{% url 'admin:comunicacao_categoria_changelist' %}">Cadastro de Categorias</a></li>
+                    <li><a href="{% url 'admin:comunicacao_reclamacao_changelist' %}">Cadastro de Reclamações</a></li>
+                    <li><a href="{% url 'admin:comunicacao_historicostatus_changelist' %}">Histórico de Reclamações</a></li>
+                    <li><a class="dropdown-item" href="{% url 'reclamacoes_forms' %}">Formulário de Reclamações</a></li>
+                </ul>
+            </li>
+        {% else %}
+            <li class="nav-item">
+                <a href="#">Gestão de Notificações</a>
+                <ul class="nav-dropdown dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'reclamacoes_forms' %}">Formulário de Reclamações</a></li>
+                    <li><a href="{% url 'admin:comunicacao_historicostatus_changelist' %}">Histórico de Reclamações</a></li>
+                    <li>
+                        <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-link" style="color: #ffffff; text-decoration: none; background-color: transparent; border: none;">Sair do Aplicativo</button>
+                        </form>
+                    </li>
+                </ul>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock %}
+
+{% block footer %}
+    {{ block.super }}
+{% endblock %}
+

@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "reclamacoes-444912",
+  "private_key_id": "51546c3c18f67f438a40d6e02495bac14b6527bc",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDKHPKlnYzb4m5C\nhLk7yTh8yuf1oTVLF+XBZse9aVXv8D9MlOqJU1Rhwa0siBOT5W38dZdtgTuChz4g\n6CCtuclFIgo+tOgtI+Oy9z7RcfftJ/QBbRi0pJLB7uNyHWdGv1dE0MRW+2hQwCQo\nQJ3a9EYMYllMbNK1Fnp56r5hNm5awoo89XMHlxAy2ddB93N8i6BxB1yHsKnljLSB\n3qOcagEZmLPydFs6yGJsgwjOGGpiTh0GH/p79oYIyALIw3vrCx67OddjPn+TZr+9\nMiHrZMmQIXpC6z8sUIJmD/+5DCR/IIRZfo/fb9CDL4EYTm5QhDc09fsAeo9PcqXr\n+JU4wEnzAgMBAAECggEAGgW8ICK23iC7PYlFKDNyOG8PioqlB/Qdutb25KZJUElI\nfR23TNMTzDpZh6BFlQc3MAgb5Rd8iAPNtgLtIjEHfwUw+H3mXtl+Ga7HwcPAviIk\nwoI/ahK+aoXNdwXeJDfCjrOqc+COv8bdYOlg6a4FztZi1Po17ubkAgp9VJrjfn/P\nIik04OEmyayurwwZmHNut/iAjq6eTpHP2atqilzEeC4sg/Ia4tbWf5rBikl6n4Zi\nN+IbWTPsv4iIRErDrlY+6+02hB+ob7Oh+qU0itlOiBnlgV2gEFYA4LGbVavKxrBa\nBvEHVRllWfnzI6P2SmKpT5TYuP2ZjzUcPqIBJJWhUQKBgQDoa0TGJEztZzJyr+I+\np+lj13Plx6VIJl//z2zJ2lJlE6/4b6G9Et8LUyZw6DOegNr7pbUcm+B3Zc89pbg8\na4PkZZrGfkvLeIqBrtWb0jbX30ukgiUyl4jw/jas4jWUp8o3wkBDSAi+01NyPXpX\nF73Qumjs72bZD4GUw7Q0p2Go1QKBgQDenodC8RAEP948G0/71ly5nU0Pvm5gzPHl\nb+dBhinZKFrJKPCgzA201T44PO+CP3hLuMEsiOoBqwDJHdrjeiFPv58c/UZM+NFk\nCDJwIZ5HFR9y/ecTQcUqK+JspjNyNzwQioeW+oc29lPsdn6ZAFDQ1vVpZFE4/HKR\n+/b1g6ILpwKBgBU1/O/MTkz4Nw1qac5oCo+3EPeucbIU9nvlFTuStiRNWKjmny8f\nMsXYz9BMELHtdo6yv8WdoC2lV/V7U0YIVeAZObfVvNsT5CgTqaDv3Vt0IHYh/n0Q\ngUnlGV5LwrIPYhAWpUC+qTWpGZt6atjZ7NPIv1yoOI2ksaG+/oozoGEFAoGBAJdC\n/AEeLpXUl7objMM/Kg3stdnGuNUJLCuLV4SMFo84/kbEjIuVWpLOedJYhRzo52H8\nDTWnaejsOkJtCLeb2lqHhyN5bHUMc6oWb78E+Livv4iwwHuzKra2zsioPTiUEzni\nBrMtUwajZO68rNRlBISCKooL4axoy6gpnenAITDtAoGBANXquCWKA8s/RngzBJfT\nzOKrLUbwk7mHstFMldevcE0EKml2+M1wnAfxGEISt5MMT/3D1GXTFZNWmlI7qrSO\nM2DIbZsJugxGtpiwwHpnHnDxpEIfaeq4FOm8MlNoouOYYbXT0qTosMgXe7KChO6C\nbVk2v6XgEjWawZPZZrtF75TB\n-----END PRIVATE KEY-----\n",
+  "client_email": "gmail-service-account@reclamacoes-444912.iam.gserviceaccount.com",
+  "client_id": "117116550408908435762",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gmail-service-account%40reclamacoes-444912.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

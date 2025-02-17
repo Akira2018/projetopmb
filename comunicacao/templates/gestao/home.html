@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Relacionamentos Públicos</title>
+    <style>
+        /* Centralização e estilos principais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .center {
+            text-align: center;
+            padding: 20px;
+        }
+        .image-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            margin: 10px;
+        }
+        .btn:hover, .btn:focus {
+            background-color: #0056b3;
+            outline: 2px solid #0056b3;
+        }
+        @media (max-width: 768px) {
+            .center h1 {
+                font-size: 1.5rem;
+            }
+            .btn {
+                width: 100%;
+                padding: 15px 20px;
+                font-size: 1.2rem;
+            }
+        }
+        .high-contrast {
+            background-color: black;
+            color: white;
+        }
+        .high-contrast .btn {
+            background-color: yellow;
+            color: black;
+        }
+    </style>
+</head>
+<body class="{% if high_contrast %}high-contrast{% endif %}">
+    <!-- Container principal -->
+    <div class="center">
+        <h1>Gestão de Relacionamentos</h1>
+        <p>Bem-vindo! Escolha uma das opções abaixo:</p>
+
+        <!-- Botões para Login, Cadastro e Sair -->
+        <a href="{% url 'login' %}" class="btn" role="button" aria-label="Fazer login no sistema">
+            Fazer Login
+        </a>
+        <a href="{% url 'signup' %}" class="btn" role="button" aria-label="Cadastrar-se no sistema">
+            Cadastrar-se
+        </a>
+
+        <!-- Botão de Sair usando POST -->
+        <form method="post" action="{% url 'logout' %}" style="display: inline;">
+           {% csrf_token %}
+           <a href="{% url 'encerramento' %}" class="btn" role="button" aria-label="Sair do sistema">
+             Sair do Aplicativo
+           </a>
+           </button>
+        </form>
+        <!-- Container para a imagem -->
+        <div class="image-container">
+            {% load static %}
+            <img src="{{ MEDIA_URL }}/media/Imagem_reclamacoes.jpg" alt="Imagem da Reclamações">
+        </div>
+    </div>
+
+    <!-- Botão de alternância de contraste -->
+    <div class="center">
+         <!-- Botão de alternância de contraste -->
+        <form method="post" action="{% url 'toggle_contrast' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn" aria-label="Alternar modo de alto contraste">
+                Alternar Modo de Contraste
+            </button>
+        </form>
+    </div>
+</body>
+
+ <body>
+    <!-- Conteúdo da página -->
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
+ </body>
+
+</html>
+

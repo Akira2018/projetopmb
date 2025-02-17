@@ -1,0 +1,190 @@
+{% load static %}
+
+{% block extrahead %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v={{ STATIC_VERSION }}">
+    <script src="{% static 'js/script.js' %}?v={{ STATIC_VERSION }}"></script>
+
+    <!-- Script do VLibras -->
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            new window.VLibras.Widget('https://vlibras.gov.br/app');
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Canal de Comunicação na cidade de Bauru</h2>
+
+    <form method="POST" enctype="multipart/form-data" class="p-4 border rounded bg-light">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="id_titulo" class="form-label">Título:</label>
+            {{ form.titulo }}
+        </div>
+
+        <div class="mb-3">
+            <label for="id_descricao" class="form-label">Descrição:</label>
+            {{ form.descricao }}
+        </div>
+
+        <div class="mb-3">
+            <label for="id_categoria" class="form-label">Categoria:</label>
+            {{ form.categoria }}
+        </div>
+
+        <div class="mb-3">
+            <label for="id_status" class="form-label">Status:</label>
+            {{ form.status }}
+        </div>
+
+        <div class="mb-3">
+             <label for="id_nome_completo" class="form-label">Nome Completo:</label>
+             {{ form.nome_completo }}
+        </div>
+
+        <div class="mb-3">
+             <label for="id_email" class="form-label">E-mail:</label>
+             {{ form.email }}
+        </div>
+
+        <div class="mb-3">
+             <label for="id_telefone" class="form-label">Telefone:</label>
+             {{ form.telefone }}
+        </div>
+        <div class="mb-3">
+            <label for="inputImagem" class="form-label">Escolher Arquivo/Tirar Foto:</label>
+            <input type="file" id="inputImagem" name="imagem" accept="image/*" capture="environment" class="form-control">
+        </div>
+
+        <p class="text-center mt-2">Ou</p>
+
+        <!-- Selecionar câmera -->
+        <div class="mb-3">
+            <label for="cameraSelect" class="form-label">Selecionar Câmera:</label>
+            <select id="cameraSelect" class="form-select">
+                <option value="user">Frontal</option>
+                <option value="environment">Traseira</option>
+            </select>
+        </div>
+
+        <!-- Botões para ativar e capturar foto -->
+        <button type="button" class="btn btn-secondary w-100" id="ativarCamera">Ativar Câmera</button>
+        <button type="button" class="btn btn-primary w-100 mt-2" id="capturarFoto" style="display: none;">Capturar Foto</button>
+
+        <!-- Vídeo e pré-visualização -->
+        <video id="video" width="100%" height="240" autoplay style="display: none;"></video>
+        <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
+
+        <!-- Campo oculto para armazenar a imagem capturada em Base64 -->
+        <input type="hidden" name="imagem_base64" id="imagemBase64">
+
+        <!-- Pré-visualização da imagem capturada -->
+        <img id="imagemPreview" src="" style="display: none; width: 100%; max-width: 320px; margin-top: 10px;">
+
+        <button type="submit" class="btn btn-primary w-100 mt-3">Salvar e Enviar Mensagem</button>
+    </form>
+</div>
+
+<!-- Botão VLibras -->
+<div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+    </div>
+</div>
+
+<!-- SCRIPT PARA ATIVAR A CÂMERA E TIRAR FOTO -->
+<!-- SCRIPT PARA ATIVAR A CÂMERA E TIRAR FOTO -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const video = document.getElementById("video");
+        const canvas = document.getElementById("canvas");
+        const ativarCameraBtn = document.getElementById("ativarCamera");
+        const capturarFotoBtn = document.getElementById("capturarFoto");
+        const cameraSelect = document.getElementById("cameraSelect");
+        const imagemBase64 = document.getElementById("imagemBase64");
+        const imagemPreview = document.getElementById("imagemPreview");
+        let stream = null;
+
+        // Função para iniciar a câmera com a opção selecionada
+        async function startCamera(facingMode = "user") {
+            try {
+                // Se já houver um stream ativo, pare todas as tracks antes de iniciar um novo
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                }
+
+                // Definir as configurações da câmera
+                const constraints = {
+                    video: { facingMode: facingMode }
+                };
+
+                stream = await navigator.mediaDevices.getUserMedia(constraints);
+                video.srcObject = stream;
+                video.style.display = "block";
+                capturarFotoBtn.style.display = "block";
+            } catch (err) {
+                console.error("Erro ao acessar a câmera:", err);
+                alert("Erro ao acessar a câmera: " + err.message);
+            }
+        }
+
+        // Ativar câmera ao clicar no botão
+        ativarCameraBtn.addEventListener("click", function () {
+            const cameraMode = cameraSelect.value; // Seleciona "user" (frontal) ou "environment" (traseira)
+            startCamera(cameraMode);
+        });
+
+        // Capturar a foto ao clicar no botão
+        capturarFotoBtn.addEventListener("click", function () {
+            if (!stream) {
+                alert("Câmera não ativada. Clique no botão 'Ativar Câmera' primeiro.");
+                return;
+            }
+
+            const context = canvas.getContext("2d");
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Converter imagem para Base64
+            const imageData = canvas.toDataURL("image/png");
+
+            // Exibir a imagem capturada na pré-visualização
+            imagemPreview.src = imageData;
+            imagemPreview.style.display = "block";
+
+            // Salvar a imagem capturada no campo de entrada oculto
+            imagemBase64.value = imageData;
+
+            // Parar a câmera após capturar a foto
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+            video.style.display = "none";
+            capturarFotoBtn.style.display = "none";
+        });
+
+        // Parar a câmera ao trocar de aba ou fechar a página
+        window.addEventListener("beforeunload", function () {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+        });
+    });
+</script>
+
+<!-- Botão VLibras -->
+<div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+    </div>
+</div>
+
+{% endblock %}  <!-- Certifique-se de fechar o bloco corretamente -->
