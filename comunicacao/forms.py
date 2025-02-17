@@ -100,12 +100,11 @@ class CustomUserCreationForm(forms.ModelForm):
             user.groups.add(group)
 
         return user
-
-# Formulário para cadastro de reclamações
 class ReclamacaoForm(forms.ModelForm):
+
     class Meta:
         model = Reclamacao
-        fields = ['titulo', 'descricao', 'categoria', 'status', 'imagem']  # Inclui o campo imagem
+        fields = ['nome_completo', 'email', 'telefone', 'titulo', 'descricao', 'categoria', 'status', 'imagem']  # Inclui os novos campos
         widgets = {
             'titulo': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -122,57 +121,73 @@ class ReclamacaoForm(forms.ModelForm):
                 'class': 'form-select',
                 'rows': 2,
                 'required': 'required',
-                'style': 'width: 100%; font-size: 0.9rem;',  # Ajuste a largura e tamanho da fonte
+                'style': 'width: 100%; font-size: 0.9rem;',
             }),
             'status': forms.Select(attrs={
                 'class': 'form-select',
                 'rows': 2,
                 'required': 'required',
-                'style': 'width: 100%; font-size: 0.9rem;',  # Ajuste a largura e tamanho da fonte
+                'style': 'width: 100%; font-size: 0.9rem;',
             }),
             'imagem': forms.ClearableFileInput(attrs={
                 'class': 'form-control',
             }),
         }
 
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            self.fields['categoria'].queryset = Categoria.objects.order_by('descricao')
+        # ✅ Novos campos adicionados (Apenas leitura)
 
-    # Validação para o campo título
+    nome_completo = forms.CharField(
+        label="Nome Completo", required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'})
+    )
+    email = forms.EmailField(
+        label="E-mail", required=False,
+        widget=forms.EmailInput(attrs={'class': 'form-control', 'readonly': 'readonly'})
+    )
+    telefone = forms.CharField(
+        label="Telefone", required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'})
+    )
+
+    def __init__(self, *args, **kwargs):
+        usuario = kwargs.pop('usuario', None)  # Recebe o usuário autenticado
+        super().__init__(*args, **kwargs)
+
+        self.fields['categoria'].queryset = Categoria.objects.order_by('descricao')
+
+        # ✅ Preenche os campos Nome, E-mail e Telefone automaticamente
+        if usuario:
+            self.fields['nome_completo'].initial = f"{usuario.first_name} {usuario.last_name}".strip()
+            self.fields['email'].initial = usuario.email
+            self.fields['telefone'].initial = getattr(usuario, 'telefone', '')
+
+    # Validações mantidas
     def clean_titulo(self):
         titulo = self.cleaned_data.get('titulo')
         if not titulo:
             raise forms.ValidationError("O campo Título é obrigatório.")
         return titulo
 
-    # Validação para o campo descrição
     def clean_descricao(self):
         descricao = self.cleaned_data.get('descricao')
         if not descricao:
             raise forms.ValidationError("O campo Descrição é obrigatório.")
         return descricao
 
-    # Validação para o campo categoria
     def clean_categoria(self):
         categoria = self.cleaned_data.get('categoria')
         if not categoria:
             raise forms.ValidationError("O campo Categoria é obrigatório.")
         return categoria
 
-    # Validação para o campo status
     def clean_status(self):
         status = self.cleaned_data.get('status')
         if not status:
             raise forms.ValidationError("O campo Status é obrigatório.")
         return status
 
-    # Validação para o campo imagem (se necessário)
     def clean_imagem(self):
         imagem = self.cleaned_data.get('imagem')
-        # Caso seja obrigatório, descomente as linhas abaixo
-        # if not imagem:
-        #     raise forms.ValidationError("O campo Imagem é obrigatório.")
         return imagem
 
 # Formulário de cadastro de administrador

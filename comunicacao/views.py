@@ -21,7 +21,8 @@ from django.template import RequestContext
 from .forms import ReclamacaoForm
 from django.core.files.base import ContentFile
 import base64
-
+from rest_framework import generics
+from .serializers import ReclamacaoSerializer, CategoriaSerializer, HistoricoStatusSerializer, ReclamacaoImagemSerializer
 
 from .forms import (
     ReclamacaoForm,
@@ -33,6 +34,36 @@ from .forms import (
     UserSignupForm
 )
 
+# Listar e criar reclamações
+class ReclamacaoListCreate(generics.ListCreateAPIView):
+    queryset = Reclamacao.objects.all().order_by('-data_envio')
+    serializer_class = ReclamacaoSerializer
+
+# Detalhes, atualização e remoção de reclamação específica
+class ReclamacaoDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Reclamacao.objects.all()
+    serializer_class = ReclamacaoSerializer
+
+# Listar e criar categorias
+class CategoriaListCreate(generics.ListCreateAPIView):
+    queryset = Categoria.objects.all()
+    serializer_class = CategoriaSerializer
+
+# Listar histórico de status por reclamação
+class HistoricoStatusList(generics.ListAPIView):
+    serializer_class = HistoricoStatusSerializer
+
+    def get_queryset(self):
+        reclamacao_id = self.kwargs['reclamacao_id']
+        return HistoricoStatus.objects.filter(reclamacao_id=reclamacao_id).order_by('-data_alteracao')
+
+# Listar imagens de uma reclamação específica
+class ReclamacaoImagemList(generics.ListAPIView):
+    serializer_class = ReclamacaoImagemSerializer
+
+    def get_queryset(self):
+        reclamacao_id = self.kwargs['reclamacao_id']
+        return ReclamacaoImagem.objects.filter(reclamacao_id=reclamacao_id)
 class CustomLoginView(LoginView):
     template_name = 'registration/login.html'
     redirect_authenticated_user = True  # Redireciona usuários autenticados
@@ -165,15 +196,15 @@ def registrar_reclamacao(request):
     else:
         form = ReclamacaoForm()
     return render(request, 'gestao/registrar_reclamacao.html', {'form': form})
-
-@login_required  # Garante que somente usuários autenticados possam acessar
+@login_required
 def reclamacoes_forms(request):
-    if request.method == "POST":
-        form = ReclamacaoForm(request.POST, request.FILES)
+    """Exibe o formulário e preenche automaticamente os dados do usuário autenticado"""
 
-        # Obtém o usuário autenticado
+    if request.method == "POST":
+        form = ReclamacaoForm(request.POST, request.FILES, usuario=request.user)  # Passa o usuário autenticado
+
         if request.user.is_authenticated:
-            form.instance.usuario = request.user  # Define o usuário
+            form.instance.usuario = request.user  # Define o usuário associado à reclamação
 
         # Verifica se há imagem em Base64 no formulário
         imagem_base64 = request.POST.get("imagem_base64")
@@ -188,7 +219,8 @@ def reclamacoes_forms(request):
             return redirect("success_page")
 
     else:
-        form = ReclamacaoForm()
+        # ✅ Passa o usuário autenticado para preencher os campos automaticamente
+        form = ReclamacaoForm(usuario=request.user)
 
     return render(request, "gestao/reclamacoes_forms.html", {"form": form})
 

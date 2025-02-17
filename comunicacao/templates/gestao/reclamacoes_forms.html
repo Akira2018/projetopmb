@@ -42,6 +42,20 @@
         </div>
 
         <div class="mb-3">
+             <label for="id_nome_completo" class="form-label">Nome Completo:</label>
+             {{ form.nome_completo }}
+        </div>
+
+        <div class="mb-3">
+             <label for="id_email" class="form-label">E-mail:</label>
+             {{ form.email }}
+        </div>
+
+        <div class="mb-3">
+             <label for="id_telefone" class="form-label">Telefone:</label>
+             {{ form.telefone }}
+        </div>
+        <div class="mb-3">
             <label for="inputImagem" class="form-label">Escolher Arquivo/Tirar Foto:</label>
             <input type="file" id="inputImagem" name="imagem" accept="image/*" capture="environment" class="form-control">
         </div>
