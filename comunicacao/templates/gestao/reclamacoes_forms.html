@@ -98,6 +98,7 @@
 </div>
 
 <!-- SCRIPT PARA ATIVAR A CÂMERA E TIRAR FOTO -->
+<!-- SCRIPT PARA ATIVAR A CÂMERA E TIRAR FOTO -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const video = document.getElementById("video");
@@ -109,25 +110,45 @@
         const imagemPreview = document.getElementById("imagemPreview");
         let stream = null;
 
+        // Função para iniciar a câmera com a opção selecionada
+        async function startCamera(facingMode = "user") {
+            try {
+                // Se já houver um stream ativo, pare todas as tracks antes de iniciar um novo
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                }
+
+                // Definir as configurações da câmera
+                const constraints = {
+                    video: { facingMode: facingMode }
+                };
+
+                stream = await navigator.mediaDevices.getUserMedia(constraints);
+                video.srcObject = stream;
+                video.style.display = "block";
+                capturarFotoBtn.style.display = "block";
+            } catch (err) {
+                console.error("Erro ao acessar a câmera:", err);
+                alert("Erro ao acessar a câmera: " + err.message);
+            }
+        }
+
         // Ativar câmera ao clicar no botão
         ativarCameraBtn.addEventListener("click", function () {
-            const cameraMode = cameraSelect.value; // Seleciona frontal ou traseira
-
-            navigator.mediaDevices.getUserMedia({ video: { facingMode: cameraMode } })
-                .then(function (mediaStream) {
-                    stream = mediaStream;
-                    video.srcObject = stream;
-                    video.style.display = "block";
-                    capturarFotoBtn.style.display = "block";
-                })
-                .catch(function (err) {
-                    alert("Erro ao acessar a câmera: " + err);
-                });
+            const cameraMode = cameraSelect.value; // Seleciona "user" (frontal) ou "environment" (traseira)
+            startCamera(cameraMode);
         });
 
         // Capturar a foto ao clicar no botão
         capturarFotoBtn.addEventListener("click", function () {
+            if (!stream) {
+                alert("Câmera não ativada. Clique no botão 'Ativar Câmera' primeiro.");
+                return;
+            }
+
             const context = canvas.getContext("2d");
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
             // Converter imagem para Base64
@@ -141,11 +162,29 @@
             imagemBase64.value = imageData;
 
             // Parar a câmera após capturar a foto
-            stream.getTracks().forEach(track => track.stop());
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
             video.style.display = "none";
             capturarFotoBtn.style.display = "none";
+        });
+
+        // Parar a câmera ao trocar de aba ou fechar a página
+        window.addEventListener("beforeunload", function () {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
         });
     });
 </script>
 
-{% endblock %}
+<!-- Botão VLibras -->
+<div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+    </div>
+</div>
+
+{% endblock %}  <!-- Certifique-se de fechar o bloco corretamente -->
