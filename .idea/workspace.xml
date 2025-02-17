@@ -5,26 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5fdfa572-1374-435d-91fd-ab8e981eca8e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ProjetoPMB_13.rar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/comunicacao/serializers.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/comunicacao/templates/email_template.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/reclamacoes/Captura_de_tela_2023-10-06_124017_dkzhQMP.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Reclamacoes.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/Reclamacoes.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/comunicacao/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/comunicacao/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/comunicacao/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/comunicacao/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/comunicacao/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/comunicacao/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/comunicacao/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/comunicacao/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/comunicacao/send_email.py" beforeDir="false" afterPath="$PROJECT_DIR$/comunicacao/send_email.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/comunicacao/signals.py" beforeDir="false" afterPath="$PROJECT_DIR$/comunicacao/signals.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/comunicacao/templates/gestao/reclamacoes_forms.html" beforeDir="false" afterPath="$PROJECT_DIR$/comunicacao/templates/gestao/reclamacoes_forms.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/comunicacao/templates/gestao/success_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/comunicacao/templates/gestao/success_page.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/comunicacao/templates/registration/signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/comunicacao/templates/registration/signup.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/comunicacao/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/comunicacao/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/comunicacao/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/comunicacao/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/comunicacao_proj/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/comunicacao_proj/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usuarios/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/usuarios/forms.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

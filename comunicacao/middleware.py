@@ -27,9 +27,12 @@ class ForeignKeyActivationMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        # Ativar as chaves estrangeiras antes de processar a requisição
-        with connection.cursor() as cursor:
-            cursor.execute("PRAGMA foreign_keys = ON;")
+        # Só ativa PRAGMA se o banco for SQLite
+        if connection.vendor == 'sqlite':
+            with connection.cursor() as cursor:
+                cursor.execute("PRAGMA foreign_keys = ON;")
+
         response = self.get_response(request)
         return response
+
 
