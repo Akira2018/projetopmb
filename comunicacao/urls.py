@@ -6,6 +6,8 @@ from django.contrib.auth.views import LogoutView
 from django.views.generic import TemplateView
 from django.http import HttpResponse
 from django.template.loader import render_to_string
+from .views import reclamacoes_forms
+from .views import success_page
 
 # Importações organizadas
 from .views import (
@@ -62,8 +64,8 @@ urlpatterns = [
     path('registrar-reclamacao/', registrar_reclamacao, name='registrar_reclamacao'),
     path('reclamacao/nova/', criar_reclamacao, name='nova_reclamacao'),
     path('minhas-reclamacoes/', minhas_reclamacoes, name='minhas_reclamacoes'),
-    path('formulario-reclamacao/', home, name='reclamacoes_forms'),  # Evita importação desnecessária
-    path('formulario-reclamacao/sucesso/', TemplateView.as_view(template_name='success_page.html'), name='success_page'),
+    path('formulario-reclamacao/', reclamacoes_forms, name='reclamacoes_forms'),
+    path('formulario-reclamacao/sucesso/', success_page, name='success_page'),
 
     # Alternar Contraste
     path('toggle-contrast/', toggle_contrast, name='toggle_contrast'),
