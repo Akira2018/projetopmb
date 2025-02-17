@@ -29,11 +29,16 @@ CSRF_TRUSTED_ORIGINS = [
     "https://projetopmb-1828de3d0b28.herokuapp.com"
 ]
 
+# Configurar o armazenamento de sessões para evitar que expirem rapidamente
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
+SESSION_COOKIE_SECURE = True  # Garante que apenas HTTPS possa acessar a sessão
+SESSION_COOKIE_HTTPONLY = True  # Impede acesso da sessão via JavaScript
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Evita que a sessão expire ao fechar o navegador
+SESSION_COOKIE_AGE = 86400  # Define a sessão para durar 24 horas
+
 #CSRF_TRUSTED_ORIGINS = ['https://escolae-255a9c5574fe.herokuapp.com/']
 
 # Define o tempo de expiração da sessão em segundos (por exemplo, 1 hora)
-SESSION_COOKIE_AGE = 3600
-
 # Redirecionar após login
 # Redirecionamentos após login e logout
 LOGIN_REDIRECT_URL = '/dashboard/'  # Substitua '/dashboard/' pela URL desejada
