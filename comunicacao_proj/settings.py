@@ -15,7 +15,7 @@ DOCKER_API_VERSION = 'auto'  # para detectar automaticamente a versão da API Do
 # SECURITY WARNING: don't run with debug turned on in production!
 
 DEBUG = True
-ALLOWED_HOSTS = ['192.168.0.203','127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['projetopmb-1828de3d0b28.herokuapp.com', '127.0.0.1', 'localhost']
 
 ADMIN_URL = 'admin/'  # Defina o URL do painel de administração
 LOGIN_URL = '/accounts/login/'
