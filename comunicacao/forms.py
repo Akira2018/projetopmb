@@ -152,6 +152,7 @@ class ReclamacaoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         usuario = kwargs.pop('usuario', None)  # Recebe o usuário autenticado
         super().__init__(*args, **kwargs)
+        self.fields['status'].initial = 'Fase Inicial'  # Define o valor inicial no formulário
 
         self.fields['categoria'].queryset = Categoria.objects.order_by('descricao')
 

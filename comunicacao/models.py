@@ -43,6 +43,7 @@ class Categoria(models.Model):
 
 class Reclamacao(models.Model):
     STATUS_CHOICES = [
+        ('Fase Inicial', 'Fase Inicial'),
         ('Pendente', 'Pendente'),
         ('Em andamento', 'Em andamento'),
         ('Resolvido', 'Resolvido'),
@@ -60,7 +61,11 @@ class Reclamacao(models.Model):
     categoria = models.ForeignKey(
         'Categoria', on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Categoria"
     )
-    status = models.CharField(max_length=50, choices=STATUS_CHOICES)
+    status = models.CharField(
+        max_length=50,
+        choices=STATUS_CHOICES,
+        default='Fase Inicial'  # Define "Fase Inicial" como padrão
+    )
     data_envio = models.DateField(auto_now_add=True, verbose_name="Data de Envio")
     imagem = models.ImageField(upload_to='reclamacoes/', null=True, blank=True, verbose_name="Imagem")  # Novo campo para imagem
 
@@ -83,43 +88,7 @@ class Reclamacao(models.Model):
                 observacao=f"Status alterado para {self.status} durante o envio de notificação."
             )
 
-        # Verifica se há uma categoria com um e-mail associado
-        if self.categoria and self.categoria.email_departamento:
-            try:
-                assunto = f"Nova Notificação: {self.titulo}"
-                mensagem = f"""
-                    Detalhes da Notificação:
-                    Usuário: {self.usuario}
-                    Título: {self.titulo}
-                    Descrição: {self.descricao}
-                    Categoria: {self.categoria.departamento}
-                    Data de Envio: {self.data_envio}
-
-                    Estamos enviando essa notificação através do aplicativo "Gestão de Relacionamentos".  
-                    Por favor, tome as providências necessárias.
-
-                    Atenciosamente,  
-                    Sistema de Notificações
-                """
-
-                # Criação do e-mail
-                email = EmailMessage(
-                    subject=assunto,
-                    body=mensagem,
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    to=[self.categoria.email_departamento],
-                )
-
-                # Verifica se há uma imagem anexada à reclamação
-                if self.imagem and default_storage.exists(self.imagem.name):
-                    with default_storage.open(self.imagem.name, 'rb') as f:
-                        email.attach(self.imagem.name, f.read(), 'image/jpeg')  # Tipo MIME ajustado para JPEG
-
-                # Envia o e-mail
-                email.send(fail_silently=False)
-
-            except BadHeaderError:
-                pass  # Captura erros de cabeçalho de e-mail
+        # ❌ Removendo completamente o envio de e-mail daqui para evitar duplicação
 
     class Meta:
         verbose_name = "Reclamação"

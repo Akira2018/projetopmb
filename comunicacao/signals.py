@@ -1,8 +1,8 @@
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save
 from django.dispatch import receiver
-from comunicacao.models import Reclamacao, Categoria, HistoricoStatus
+from comunicacao.models import Reclamacao, Categoria
 import os
 
 @receiver(post_save, sender=Reclamacao)
@@ -72,24 +72,23 @@ def enviar_email_reclamacao(sender, instance, created, **kwargs):
         </html>
         """
 
-        # Lista de destinatários
-        destinatarios = [destinatario_email]
-        if usuario.email and usuario.email != destinatario_email:
-            destinatarios.append(usuario.email)
+        # Garantindo que apenas um e-mail seja enviado com cópia para o usuário
+        destinatario_principal = [usuario_email] if usuario.email else []  # Usuário recebe o e-mail
+        copia_usuario = [destinatario_email]  # O destinatário será colocado em cópia
+
+        print(f"🔹 Enviando e-mail para: {destinatario_principal}, com cópia para: {copia_usuario}")
 
         # Criando e-mail
         email = EmailMultiAlternatives(
             subject="📌 Nova Reclamação Registrada",
             from_email=remetente_email,
-            to=destinatarios,
-            body="",  # Não precisa de versão texto puro
+            to=destinatario_principal,  # Apenas um destinatário principal
+            cc=copia_usuario,  # Usuário recebe uma cópia do e-mail
+            reply_to=[usuario_email]  # Define o usuário como remetente de resposta
         )
 
         # Anexando a versão HTML
         email.attach_alternative(mensagem_html, "text/html")
-        email.encoding = 'utf-8'
-        email.extra_headers = {'Content-Type': 'text/html; charset=UTF-8'}
-        email.extra_headers["Reply-To"] = usuario_email
 
         # 🔹 Se houver uma imagem anexada, adicionamos ao e-mail
         if instance.imagem:
@@ -100,4 +99,4 @@ def enviar_email_reclamacao(sender, instance, created, **kwargs):
         # Enviar o e-mail
         email.send(fail_silently=False)
 
-        print(f"✅ E-mail enviado corretamente para: {', '.join(destinatarios)}")
+        print(f"✅ E-mail enviado corretamente para: {destinatario_email}, com cópia para: {usuario_email}")
