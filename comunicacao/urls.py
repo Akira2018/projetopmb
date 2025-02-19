@@ -31,6 +31,8 @@ from comunicacao.views import (
     HistoricoStatusList,
     ReclamacaoImagemList,
 )
+def home_redirect(request):
+    return redirect('home')  # Substitua 'dashboard' pelo nome correto da view inicial
 
 # Teste simples de resposta HTTP
 def simple_test_view(request):
@@ -39,6 +41,7 @@ def simple_test_view(request):
 urlpatterns = [
     # Página inicial
     path('', home, name='home'),
+    path('', home_redirect, name='home_redirect'),  # Define a URL raiz corretamente
 
     # Autenticação
     path('login/', LogoutView.as_view(), name='login'),

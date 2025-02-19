@@ -14,8 +14,10 @@ DOCKER_API_VERSION = 'auto'  # para detectar automaticamente a versão da API Do
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = True
-ALLOWED_HOSTS = ['projetopmb-1828de3d0b28.herokuapp.com', '127.0.0.1', 'localhost']
+#DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = 'True'
+
+ALLOWED_HOSTS = ['*']
 
 ADMIN_URL = 'admin/'  # Defina o URL do painel de administração
 LOGIN_URL = '/accounts/login/'
@@ -35,8 +37,6 @@ SESSION_COOKIE_SECURE = True  # Garante que apenas HTTPS possa acessar a sessão
 SESSION_COOKIE_HTTPONLY = True  # Impede acesso da sessão via JavaScript
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Evita que a sessão expire ao fechar o navegador
 SESSION_COOKIE_AGE = 86400  # Define a sessão para durar 24 horas
-
-#CSRF_TRUSTED_ORIGINS = ['https://escolae-255a9c5574fe.herokuapp.com/']
 
 # Define o tempo de expiração da sessão em segundos (por exemplo, 1 hora)
 # Redirecionar após login
@@ -211,23 +211,30 @@ WSGI_APPLICATION = 'comunicacao_proj.wsgi.application'
 
 # Configurações do Banco de Dados
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'Reclamacoes.sqlite3',  # Localização do banco de dados
-    }
-}
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'Reclamacoes.sqlite3',  # Localização do banco de dados
+#    }
+#}
 
 # Diretório base do projeto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Configuração do banco de dados para produção no Heroku
-DATABASE_URL = os.getenv('DATABASE_URL')  # Obtém a URL do banco de dados do Heroku
+DATABASE_URL = os.getenv('DATABASE_URL')
 
 if DATABASE_URL:
-    DATABASES['default'] = dj_database_url.config(default=DATABASE_URL, conn_max_age=600)
-
+    DATABASES = {
+        'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600, ssl_require=True)
+    }
+else:
+    # Fallback para SQLite se o DATABASE_URL não estiver definido
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'Reclamacoes.sqlite3'),
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
