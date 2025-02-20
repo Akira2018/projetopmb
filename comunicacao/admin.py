@@ -7,6 +7,12 @@ from django.utils.html import format_html
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.admin import AdminSite
+from django.contrib import admin
+class CustomAdmin(admin.ModelAdmin):
+    class Media:
+        css = {
+            'all': ('static/admin_custom.css',)
+        }
 
 class CustomAdminSite(AdminSite):
     site_header = "Gestão de Relacionamentos"

@@ -1,4 +1,11 @@
-/* Oculta o menu original do Django Admin */
+/* Esse codigo formata o campo de Pesquisa de Categoria */
+#changelist-search input[type="text"] {
+    width: 500px !important;  /* Define a largura horizontal */
+    height: 30px !important;  /* Aumenta a altura (espaço para digitação) */
+    font-size: 20px;  /* Aumenta o tamanho do texto */
+    padding: 8px 10px;  /* Ajusta o espaço interno */
+    border-radius: 5px;  /* Arredonda as bordas */
+}
 
 .form-container {
     max-width: 600px; /* Reduza para 500px ou 400px, se necessário */
