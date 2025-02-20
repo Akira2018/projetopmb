@@ -49,11 +49,15 @@
         input {
             width: 100%;
             padding: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 1rem;
             autocomplete: off;
+        }
+
+        input:invalid {
+            border-color: red;
         }
 
         button {
@@ -103,6 +107,19 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
+
+        .password-rules, .username-rules {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.85rem;
+            display: none;
+        }
+
     </style>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -112,7 +129,6 @@
     <div class="container">
         <h1>Cadastro de Usuário</h1>
 
-        <!-- Exibir mensagens de sucesso e erro -->
         {% if messages %}
             <ul>
                 {% for message in messages %}
@@ -123,7 +139,6 @@
             </ul>
         {% endif %}
 
-        <!-- Exibir erros do formulário no topo -->
         {% if form.errors %}
             <div class="alert alert-danger">
                 <ul>
@@ -136,7 +151,7 @@
             </div>
         {% endif %}
 
-        <form method="post">
+        <form method="post" id="registration-form">
             {% csrf_token %}
 
             <div>
@@ -153,22 +168,29 @@
                 <label for="id_telefone">Telefone:</label>
                 {{ form.telefone }}
             </div>
-             <div>
+
+            <div>
                 <input type="hidden" name="membro_da_equipe" value="True">
             </div>
+
             <div>
                 <label for="id_username">Username/Login:</label>
                 {{ form.username }}
+                <p class="username-rules">O login deve ter pelo menos 5 caracteres e não pode conter espaços.</p>
+                <p class="error-message" id="username-error"></p>
             </div>
 
             <div>
                 <label for="id_password1">Senha:</label>
                 {{ form.password1 }}
+                <p class="password-rules">A senha deve ter pelo menos 8 caracteres, incluindo uma letra maiúscula, uma minúscula, um número e um caractere especial.</p>
+                <p class="error-message" id="password-error"></p>
             </div>
 
             <div>
                 <label for="id_password2">Confirme sua senha:</label>
                 {{ form.password2 }}
+                <p class="error-message" id="password2-error"></p>
             </div>
 
             <button type="submit">Cadastrar</button>
@@ -182,6 +204,42 @@
     <script>
         $(document).ready(function() {
             $('#id_telefone').mask('(00) 00000-0000');
+
+            $('#registration-form').on('submit', function(event) {
+                let username = $('#id_username').val();
+                let password = $('#id_password1').val();
+                let confirmPassword = $('#id_password2').val();
+                let isValid = true;
+
+                // Validação do login
+                if (username.length < 5 || /\s/.test(username)) {
+                    $('#username-error').text('O login deve ter pelo menos 5 caracteres e não pode conter espaços.').show();
+                    isValid = false;
+                } else {
+                    $('#username-error').hide();
+                }
+
+                // Validação da senha
+                let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+                if (!passwordRegex.test(password)) {
+                    $('#password-error').text('A senha não atende aos requisitos de segurança.').show();
+                    isValid = false;
+                } else {
+                    $('#password-error').hide();
+                }
+
+                // Confirmação de senha
+                if (password !== confirmPassword) {
+                    $('#password2-error').text('As senhas não coincidem.').show();
+                    isValid = false;
+                } else {
+                    $('#password2-error').hide();
+                }
+
+                if (!isValid) {
+                    event.preventDefault();
+                }
+            });
         });
     </script>
 </body>

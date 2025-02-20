@@ -7,7 +7,7 @@ import os
 
 @receiver(post_save, sender=Reclamacao)
 def enviar_email_reclamacao(sender, instance, created, **kwargs):
-    """ Enviar e-mail automaticamente após registrar uma nova reclamação """
+    """ Enviar e-mail automaticamente após registrar uma nova comunicação """
     if created:  # Verifica se a reclamação foi criada
 
         usuario = instance.usuario
@@ -80,7 +80,7 @@ def enviar_email_reclamacao(sender, instance, created, **kwargs):
 
         # Criando e-mail
         email = EmailMultiAlternatives(
-            subject="📌 Nova Reclamação Registrada",
+            subject="📌 Registro de Comunicação",
             from_email=remetente_email,
             to=destinatario_principal,  # Apenas um destinatário principal
             cc=copia_usuario,  # Usuário recebe uma cópia do e-mail
